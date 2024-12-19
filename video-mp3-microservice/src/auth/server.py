@@ -17,6 +17,23 @@ def login():
     if not auth:
         return "Missing credentials", 401
     
+    #Check db for username and password
+    cur = mysql.connection.cursor()
+    result = cur.execute(
+        "SELECT email, password FROM user WHERE email=%s", (auth.username)
+    )
     
-    
+    #Result is a list of rows where each row corresponds to the user(trying to log in) in the auth db
+    if result > 0:
+        user_row = cur.fetchone()
+        email = user_row[0]
+        password = user_row[1]
+
+        if auth.username != email or auth.password != password:
+            return "invalid creds", 401
+        else:
+            return createJWT(auth.username, os.environ.get("JWT_SECRET"), True)
+    else:
+        return "Invalid credentials, user doesn't exists", 401
+
 
