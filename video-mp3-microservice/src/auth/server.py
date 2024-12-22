@@ -37,3 +37,31 @@ def login():
         return "Invalid credentials, user doesn't exists", 401
 
 
+@server.route("/validate", methods=['POST'])
+def validate():
+    encoded_jwt = request.headers["Authorization"]
+
+    if not encoded_jwt:
+        return "Missing credentials", 401
+    encoded_jwt = encoded_jwt.split(" ")[1]
+    try:
+        decoded = jwt.decode(encoded_jwt, os.environ.get("JWT_SECRET"), algorithm=["HS256"])
+    except:
+        return "not authorized", 403
+
+    return decoded, 200
+
+def createJWT(username, secret, authz):
+    return jwt.encode(
+        {
+            "username": username,
+            "exp": datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(days=1),
+            "iat": datetime.now(datetime.timezone.utc),
+            "admin": authz,
+        },
+        secret,
+        algorithm='HS256'
+    )
+
+if __name__ == "__main__":
+    server.run(host='0.0.0.0', port=5000)
