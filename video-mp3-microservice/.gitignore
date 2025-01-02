@@ -1,1 +1,3 @@
 venv
+src/auth/manifests/auth-secret.yaml
+src/gateway/manifests/gateway-secret.yaml
