@@ -1,3 +1,6 @@
 venv
 src/auth/manifests/auth-secret.yaml
 src/gateway/manifests/gateway-secret.yaml
+src/rabbit/manifests/rabbitmq-secret.yaml
+src/auth/init.sql
+src/converter/convenv
