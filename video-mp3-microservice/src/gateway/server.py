@@ -26,7 +26,7 @@ def login():
 @server.route("/upload", methods=["POST"])
 def upload():
     access, err = validate.token(request)
-
+    print(access, f'erro --> {err}')
     access = json.loads(access)  #loads json to python object particularly dict
 
     if access["admin"]:
