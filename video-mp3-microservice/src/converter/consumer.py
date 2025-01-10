@@ -24,8 +24,10 @@ def main():
         #delivery_tag is an unique identifier for each message
 
         if err:
-            channel.basic_nack(delivery_tag=method.delivery_tag)
+            print(f"Error during conversion: {err}")
+            channel.basic_nack(delivery_tag=method.delivery_tag) #delivery_tag identifies a specific channel 
         else:
+            print("Conversion successful")
             channel.basic_ack(delivery_tag=method.delivery_tag)
 
     channel.basic_consume(
