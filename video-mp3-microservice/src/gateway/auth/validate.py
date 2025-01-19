@@ -10,11 +10,13 @@ def token(request):
         return None, ("missing credentials", 401)
     
     response = requests.post(
-        f"http://{os.environ.get["AUTH_SVC_ADDRESS"]}/validate",
+        f"http://{os.environ.get("AUTH_SVC_ADDRESS")}/validate",
         headers={"Authorization": token}
     )
 
     if response.status_code == 200:
+        print("Token validated")
         return response.text, None
     else:
+        print("Non-valid token")
         return None, (response.text, response.status_code)
